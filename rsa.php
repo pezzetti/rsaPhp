@@ -5,14 +5,15 @@ class RSA{
      * Calcula o Z e chama a função que procura possiveis E
      */
   public function getPossiveisE($p, $q){
-    //Calcula Z        
-    $z = bcmul(bcsub($p, 1), bcsub($q, 1));      
+      $this->p = $p;
+      $this->q = $q;
+    //Calcula Z              
+    $this->z = bcmul(bcsub($p, 1), bcsub($q, 1));      
     // Retorna array de E's possiveis
-    $e = $this->encontraE($z, $p,$q);
-      
+    $e = $this->encontraE($this->z, $p,$q);    
     return $e;
   }
-
+ 
     /* 
     * Faz o Maior Divisor Comum
     */
@@ -46,9 +47,25 @@ class RSA{
             }
         }        
         return $result;
-    }
-   
-   
+    }    
+    
+   /**
+    * Encontra D
+    */
+   public function encontraD($e,$z){
+       //echo "\n E $e";
+       
+       //while(!is_int($d =($z+1)/$e) || ($d =($z+1)/$e == $this->p) ||  ($d =($z+1)/$e ==$this->q) ||  ($d =($z+1)/$e == $e)){
+       $d = ($z+1)/$e;
+       while(!is_int($d) || $d == $e || $d == $this->p || $d == $this->q){
+           //echo "\n Z ->". $z." D-> $d<br/>";           
+           $d = ($z+1)/$e;
+           $z = $z+$this->z;
+           
+       }       
+       return $d;
+       
+   }
 }
 
 ?>
