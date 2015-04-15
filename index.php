@@ -12,6 +12,13 @@
         $eEscolhido = $_POST['e'];
         $d = $rsa->encontraD($eEscolhido, $rsa->z);      
     }
+    if(isset($_POST['mensagemParaCifrar'])){
+        $msg = $_POST['mensagemParaCifrar'];
+        for($i = 0; $i<  strlen($msg);$i++){
+            echo ord($msg[$i]). "<br/>";
+        }    
+    
+    }
  } 
 ?>
 
@@ -69,9 +76,21 @@
             </fieldset>
         </form>
         <?php if(isset($_POST['e'])):?>
-            <div style="width:200px;height:200px;">           
+            <div style="width:200px;height:100px; border:2px solid #888; margin-bottom: 10px;">           
                 <p>Chave publica <?php echo "($eEscolhido,$n)";?>
                 <p>Chave privada <?php echo "($d,$n)";?>
+            </div>        
+            <div style="width:290px;height:200px; border:1px solid #888; padding:5px;">
+                <form method='post' name="cifraMensagem">
+                    <p>Digite a mensagem a ser cifrada
+                    <textarea cols='35' rows='5' name="mensagemParaCifrar"><?php echo $_POST['mensagemParaCifrar']?></textarea>
+                    <input type="hidden" name="q" value="<?php echo $_POST['q'];?>" />
+                    <input type="hidden" name="p" value="<?php echo $_POST['p'];?>" />
+                    <input type="hidden" name="e" value="<?php echo $_POST['e'];?>" />
+                    <input type="hidden" name="d" value="<?php echo $d;?>" />
+               
+                    <input type='submit' value="Cifrar Mensagem" style="margin-top:5px;"/>    
+                </form>
             </div>
         <?php endif;?>
     </body>
