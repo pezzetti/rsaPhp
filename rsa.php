@@ -1,16 +1,21 @@
 <?php
 class RSA{
     
+    public function RSA($p, $q){
+         $this->z = bcmul(bcsub($p, 1), bcsub($q, 1));     
+         $this->p = $p;
+      $this->q = $q;
+    }
     /**
      * Calcula o Z e chama a função que procura possiveis E
      */
   public function getPossiveisE($p, $q){
-      $this->p = $p;
+    /*  $this->p = $p;
       $this->q = $q;
     //Calcula Z              
-    $this->z = bcmul(bcsub($p, 1), bcsub($q, 1));      
+    $this->z = bcmul(bcsub($p, 1), bcsub($q, 1));    */  
     // Retorna array de E's possiveis
-    $e = $this->encontraE($this->z, $p,$q);    
+    $e = $this->encontraE($this->z, $this->p,$this->q);    
     return $e;
   }
  
@@ -58,11 +63,12 @@ class RSA{
        //while(!is_int($d =($z+1)/$e) || ($d =($z+1)/$e == $this->p) ||  ($d =($z+1)/$e ==$this->q) ||  ($d =($z+1)/$e == $e)){
        $d = ($z+1)/$e;
        while(!is_int($d) || $d == $e || $d == $this->p || $d == $this->q){
-           //echo "\n Z ->". $z." D-> $d<br/>";           
+           echo "\n Z ->". $z." D-> $d<br/>";           
            $d = ($z+1)/$e;
-           $z = $z+$this->z;
+           $z = $z+$this->z;         
            
-       }       
+       }        
+       //  echo "\n Z ->". $z." D-> $d<br/>";     
        return $d;
        
    }
