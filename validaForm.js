@@ -10,5 +10,9 @@
                 alert("Selecione um valor para Q");
                 return false;                
             }
+			if(q.value == p.value){
+				alert("Selecione valores diferentes para P e Q");
+				return false;
+			}
             return true;
         }

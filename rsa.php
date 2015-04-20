@@ -87,16 +87,16 @@ class RSA{
     }
         
     
-     function calculaOperacaoModular($mensagem, $n, $expoente) {
+     function calculaOperacaoModular($letra, $n, $expoente) {
          // expoente em binário e depois coloca no array inverso para fazer os calculos dos mods na sequencia correta.
         $expoenteBinario = decbin($expoente);        
         $arrayBinario = str_split(strrev($expoenteBinario));
         $ultimaMultiplicacao = gmp_init(1);
-        $m_original = strval($mensagem);
-        $n_original = strval($n);
+        $letra = strval($letra);
+        $nString= strval($n);
         foreach ($arrayBinario as $chave => $valorBinario) {
-            $m = gmp_init($m_original);
-            $n = gmp_init($n_original);           
+            $l = gmp_init($letra);
+            $n = gmp_init($nString);           
             // só faz o que tem valor 1 no numero binário
             if($valorBinario == 1){        
                 // numero de iterações da operacao modular
@@ -104,15 +104,15 @@ class RSA{
                 if($chave != 0){
                     while($i > 0){
                         // vai armazenando o calculos dos mods na $m para depois fazer na ultima multiplicacao
-                        $m = $this->mod(gmp_pow ($m,"2"),$n);
+                        $l = $this->mod(gmp_pow ($l,"2"),$n);
                         $i--;
                     }  
                 }else{
                     // posicao zero do array nao faz mod ao quadrado
-                    $m = $this->mod($m,$n);                       
+                    $l = $this->mod($l,$n);                       
                 }                
                 // vai armazenando a multiplicacao entre os resultados dos binarios [  ]
-                $ultimaMultiplicacao = gmp_mul($ultimaMultiplicacao, $this->mod($m,$n));
+                $ultimaMultiplicacao = gmp_mul($ultimaMultiplicacao, $this->mod($l,$n));
             }
         }
         //retorna o ultimo mod ->  [ ]mod n
