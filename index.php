@@ -16,18 +16,22 @@
     if(isset($_POST['mensagemParaCifrar'])){
         $msg = $_POST['mensagemParaCifrar'];
         $retorno = $rsa->montaTexto($msg, $n, $eEscolhido);
-        echo "<br /> EM ASCII<br />";
-        for($i = 0; $i<  strlen($msg);$i++){
-            echo ord($msg[$i]). " ";
-        }        
-        echo "<br /> Mensagem Cifrada ". $retorno;
+        echo "<div style ='width:1000px; height:auto; border:2px solid #888; margin: 0 auto;'>";
+            echo "<p> Mensagem em ASC: ";
+            for($i = 0; $i<  strlen($msg);$i++){
+                echo ord($msg[$i]). " ";
+            }        
+            echo "<textarea style ='width: 900px;height: 100px; margin:5px;'> Mensagem Cifrada: ". $retorno . "</textarea>";
+        echo "</div>";
     }
     if(isset($_POST['mensagemParaDecifrar'])){
           $msg = $_POST['mensagemParaDecifrar'];
-          $retorno = $rsa->montaTextoDecifradoASCII($msg,$n, $_POST['d']);
-          echo "<br /> Texto Descifrado em ASC: ". $retorno;
-          $convertido = $rsa->montaTextoDecifrado($retorno);
-          echo "<br /> Texto corrreto ". $convertido;
+          $retorno = $rsa->decifraAsc($msg,$n, $_POST['d']);
+          echo "<div style ='width:1000px; height:auto; border:2px solid #888; margin: 0 auto;'>";
+            echo "<p>Texto Descifrado em ASC: ". $retorno;
+            $convertido = $rsa->ascParaTextoNormal($retorno);
+            echo "<p> Texto corrreto: ". $convertido;
+          echo "</div>";
     }
  } 
 ?>
@@ -66,8 +70,12 @@
                 <input type="submit" value="Gerar E" id ="enviapq" />
             </fieldset>
         </form>
+        <div style="width:150px;height:79px; border:1px solid #888; padding:5px;margin: 5px; float:left;"> 
+           <p>Z: <?php echo $rsa->z;?>
+           <p>N: <?php echo $rsa->n;?>
+        </div>
          <form method='post' name="escolheE" style="width:290px;">
-            <fieldset>
+            <fieldset style=" height: 71px;    margin: 21px;    width: 155px;">
                 <label>Escolha E: </label>
                 <select name="e" style="width:100px;">
                      <option>Selecione</option>
@@ -86,11 +94,11 @@
             </fieldset>
         </form>
         <?php if(isset($_POST['e'])):?>
-            <div style="width:200px;height:100px; border:2px solid #888; margin-bottom: 10px;">           
+            <div style="width:200px;height:100px; border:2px solid #888; margin-bottom: 10px;">                        
                 <p>Chave publica <?php echo "($eEscolhido,$n)";?>
                 <p>Chave privada <?php echo "($d,$n)";?>
             </div>        
-            <div style="width:290px;height:200px; border:1px solid #888; padding:5px;">
+            <div style="width:350px;height:200px; border:1px solid #888; padding:5px;">
                 <form method='post' name="cifraMensagem">
                     <p>Digite a mensagem a ser cifrada
                     <textarea cols='35' rows='5' name="mensagemParaCifrar"><?php echo $_POST['mensagemParaCifrar']?></textarea>
@@ -103,7 +111,7 @@
                 </form>
             </div>
         <?php endif;?>
-          <div style="width:290px;height:200px; border:1px solid #888; padding:5px;">
+          <div style="width:350px;height:200px; border:1px solid #888; padding:5px;">
                 <form method='post' name="decrifra">
                     <p>Digite a mensagem a ser cifrada
                     <textarea cols='35' rows='5' name="mensagemParaDecifrar"><?php echo $_POST['mensagemParaDecifrar']?></textarea>
