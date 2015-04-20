@@ -15,10 +15,19 @@
     }
     if(isset($_POST['mensagemParaCifrar'])){
         $msg = $_POST['mensagemParaCifrar'];
+        $retorno = $rsa->montaTexto($msg, $n, $eEscolhido);
+        echo "<br /> EM ASCII<br />";
         for($i = 0; $i<  strlen($msg);$i++){
-            echo ord($msg[$i]). "<br/>";
-        }    
-    
+            echo ord($msg[$i]). " ";
+        }        
+        echo "<br /> Mensagem Cifrada ". $retorno;
+    }
+    if(isset($_POST['mensagemParaDecifrar'])){
+          $msg = $_POST['mensagemParaDecifrar'];
+          $retorno = $rsa->montaTextoDecifradoASCII($msg,$n, $_POST['d']);
+          echo "<br /> Texto Descifrado em ASC: ". $retorno;
+          $convertido = $rsa->montaTextoDecifrado($retorno);
+          echo "<br /> Texto corrreto ". $convertido;
     }
  } 
 ?>
@@ -94,6 +103,18 @@
                 </form>
             </div>
         <?php endif;?>
+          <div style="width:290px;height:200px; border:1px solid #888; padding:5px;">
+                <form method='post' name="decrifra">
+                    <p>Digite a mensagem a ser cifrada
+                    <textarea cols='35' rows='5' name="mensagemParaDecifrar"><?php echo $_POST['mensagemParaDecifrar']?></textarea>
+                    <input type="hidden" name="q" value="<?php echo $_POST['q'];?>" />
+                    <input type="hidden" name="p" value="<?php echo $_POST['p'];?>" />
+                    <input type="hidden" name="e" value="<?php echo $_POST['e'];?>" />
+                    <input type="hidden" name="mensagemParaCifrar" value="<?php echo $_POST['mensagemParaCifrar'];?>" />
+                    <input type="hidden" name="d" value="<?php echo $d;?>" />               
+                    <input type='submit' value="Decifrar Mensagem" style="margin-top:5px;"/>    
+                </form>
+            </div>
     </body>
         
 </html>
